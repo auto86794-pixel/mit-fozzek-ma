@@ -43,3 +43,11 @@ npm run build
 2. Ellenőrzött recept-adatbázis és admin
 3. Alapanyag-alapú ajánló
 4. Több eszköz közti szinkron
+
+
+## V2 változások
+- Fotóközpontú receptkártyák és nyitóoldal, zsályazöld–bézs–arany színekkel.
+- Napi ajánlásnál a nemrég megnyitott receptek hátrébb kerülnek.
+- „Mi van otthon?” alapanyagok helyi mentése, részleges egyezéses ajánlás.
+- Bevásárlólistába csak a nem otthon lévő hozzávalók kerülnek.
+- A fotók külső Unsplash illusztrációk; nem feltétlenül a recept szerinti ételt mutatják. Éles kiadás előtt receptazonos, jogtisztán felhasználható saját képekre cserélendők.
