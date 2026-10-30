@@ -1,4 +1,4 @@
-# Mit főzzek ma? – stabil induló alap
+# Varázsfazék V3 – Minden napra egy jó ötlet.
 
 Magyar nyelvű, mobilra optimalizált Next.js 16 alkalmazás, zsályazöld–bézs–arany arculattal.
 
@@ -51,3 +51,9 @@ npm run build
 - „Mi van otthon?” alapanyagok helyi mentése, részleges egyezéses ajánlás.
 - Bevásárlólistába csak a nem otthon lévő hozzávalók kerülnek.
 - A fotók külső Unsplash illusztrációk; nem feltétlenül a recept szerinti ételt mutatják. Éles kiadás előtt receptazonos, jogtisztán felhasználható saját képekre cserélendők.
+
+## V3 márkaváltás
+
+- Új márkanév: Varázsfazék; domain: varazsfazek.hu (DNS beállítás külön).
+- A korábbi `mfm-*` localStorage-kulcsok szándékosan megmaradtak, hogy a korábbi kedvencek és bevásárlólisták azonos böngészőben és domainen ne vesszenek el. **Új domainen a böngésző nem viszi át automatikusan a régi domain helyi adatait.**
+- Az Unsplash-fotók jelenleg illusztrációk, nem minden ételnél pontosak.

@@ -10,3 +10,9 @@
 .detail-hero{padding:12px 12px 20px}.detail-hero h1{font-size:27px}
 .pantry-section{background:#f3e9d8;border-radius:20px;padding:2px 15px 18px;margin:14px 0}.pantry-section h2{font-size:19px}.pantry-form{display:flex;gap:7px;margin:12px 0}.pantry-form input{min-width:0}.pantry-match{display:block;text-align:left;width:100%;padding:12px;background:#fff;border:1px solid #e7d7bd;border-radius:10px;margin-top:7px;color:#34483a}.recipe-card{align-items:stretch}.recipe-info{display:flex;flex-direction:column;justify-content:center}.header{background:#f3e9d8}.brand-mark{background:#718c72}.small.secondary{color:#946d2b}
 @media(max-width:380px){.food-photo{width:90px;min-width:90px}.recipe-card{gap:9px;padding:9px}.small{font-size:11px}.hero-photo{height:180px}}
+
+/* V3 – finomított Varázsfazék arculat */
+.header{position:relative}.header::after{content:"";position:absolute;bottom:0;left:22px;right:22px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.header strong{font-size:23px;letter-spacing:-.5px;color:#34483a}.header span{font-size:12px;letter-spacing:.15px}.brand-mark{font-family:Georgia,serif;font-size:28px;border:1px solid #b9a16d;box-shadow:inset 0 0 0 3px #ffffff26;background:linear-gradient(145deg,#6d8b71,#405c49)}
+.hero h1{font-family:Georgia,serif;font-weight:700;letter-spacing:-.6px}.hero h1 em{color:#658168}.eyebrow{color:#927342}.primary{box-shadow:0 3px 8px #34483a14}.recipe-card{transition:box-shadow .18s ease,transform .18s ease}.recipe-card:hover{box-shadow:0 9px 24px #34483a16;transform:translateY(-1px)}
+@media(prefers-reduced-motion:reduce){.recipe-card{transition:none}.recipe-card:hover{transform:none}}
