@@ -16,3 +16,17 @@
 .header strong{font-size:23px;letter-spacing:-.5px;color:#34483a}.header span{font-size:12px;letter-spacing:.15px}.brand-mark{font-family:Georgia,serif;font-size:28px;border:1px solid #b9a16d;box-shadow:inset 0 0 0 3px #ffffff26;background:linear-gradient(145deg,#6d8b71,#405c49)}
 .hero h1{font-family:Georgia,serif;font-weight:700;letter-spacing:-.6px}.hero h1 em{color:#658168}.eyebrow{color:#927342}.primary{box-shadow:0 3px 8px #34483a14}.recipe-card{transition:box-shadow .18s ease,transform .18s ease}.recipe-card:hover{box-shadow:0 9px 24px #34483a16;transform:translateY(-1px)}
 @media(prefers-reduced-motion:reduce){.recipe-card{transition:none}.recipe-card:hover{transform:none}}
+
+/* V4: olvashato, mobilbarat betumeretek */
+.header{align-items:center;padding:17px 16px;gap:11px}
+.header>div:last-child{min-width:0;flex:1}
+.header strong{font-size:clamp(22px,6vw,27px);line-height:1.15}
+.header span{font-size:clamp(16px,4.4vw,19px);font-weight:700;line-height:1.3;letter-spacing:0;color:#405b46;overflow-wrap:normal;white-space:normal;margin-top:5px}
+.hero .eyebrow,.eyebrow{font-size:14px;letter-spacing:.6px}
+.hero p:not(.eyebrow){font-size:17px;line-height:1.5}
+.filters label,.chip,.tiny,.note,.muted,.detail-hero p{font-size:15px;line-height:1.45}
+.small{font-size:15px;min-height:43px;padding:10px 12px}
+.bottom-nav button{min-height:54px;gap:4px}
+.bottom-nav button small{font-size:13px;font-weight:700;line-height:1.2}
+footer{font-size:13px;line-height:1.4}
+@media(max-width:380px){.header{padding:14px 12px;gap:9px}.brand-mark{width:40px;height:40px;flex:0 0 40px}.header strong{font-size:22px}.header span{font-size:16px}.bottom-nav button small{font-size:12px}.recipe-card .small{font-size:14px}}
