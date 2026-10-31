@@ -5,7 +5,11 @@ import {recipePhotos} from '../lib/recipe-photos.mjs';
 import ShoppingChecklist from './shopping-checklist';
 import {nextSuggestions,rankPantry,ingredientAvailable} from '../lib/recommendations.mjs';
 import {shoppingKey,reopenAddedItems} from '../lib/shopping.mjs';
-import {days,generateWeek,replaceDay,weekIngredients} from '../lib/weekly-plan.mjs';
+import {generateWeek,replaceDay,weekIngredients} from '../lib/weekly-plan.mjs';
+import WeeklyPlanner from './weekly-planner';
+import {usePlannerStore} from './use-planner-store';
+import {weekImportKey,importWeekGroceries,updateShopping} from '../lib/planner-state.mjs';
+import type {PlanSettings} from '../lib/planner-state.mjs';
 type Recipe=typeof recipes[number];type Ingredient={name:string;quantity:number;unit:string};
 type Tab='home'|'recipes'|'shopping'|'favorites'|'week';
 function FoodPhoto({recipe,large=false}:{recipe:Recipe,large?:boolean}){
@@ -18,13 +22,58 @@ function FoodPhoto({recipe,large=false}:{recipe:Recipe,large?:boolean}){
 }
 function readSaved<T>(key:string,fallback:T):T{try{const value=localStorage.getItem(key);return value?JSON.parse(value):fallback}catch{return fallback}}
 export default function Home(){
- const [tab,setTab]=useState<Tab>('home');const [minutes,setMinutes]=useState(60);const [type,setType]=useState('any');const [servings,setServings]=useState(4);const [selected,setSelected]=useState<Recipe|null>(null);const [favorites,setFavorites]=useState<string[]>([]);const [shopping,setShopping]=useState<Ingredient[]>([]);const [checked,setChecked]=useState<string[]>([]);const [ready,setReady]=useState(false);const [search,setSearch]=useState('');const [pantry,setPantry]=useState<string[]>([]);const [pantryInput,setPantryInput]=useState('');const [showPantry,setShowPantry]=useState(false);const [recent,setRecent]=useState<string[]>([]);const [shown,setShown]=useState<string[]>([]);const [week,setWeek]=useState<string[]>([]);
- useEffect(()=>{setFavorites(readSaved('mfm-favorites',[]));setShopping(readSaved('mfm-shopping',[]));setChecked(readSaved('mfm-checked',[]));setPantry(readSaved('mfm-pantry',[]));setRecent(readSaved('mfm-recent',[]));setWeek(readSaved('mfm-week-v6',[]));setReady(true)},[]);
- useEffect(()=>{if(ready)localStorage.setItem('mfm-favorites',JSON.stringify(favorites))},[favorites,ready]);useEffect(()=>{if(ready)localStorage.setItem('mfm-shopping',JSON.stringify(shopping))},[shopping,ready]);useEffect(()=>{if(ready)localStorage.setItem('mfm-checked',JSON.stringify(checked))},[checked,ready]);
+ const [tab,setTab]=useState<Tab>('home');const [selected,setSelected]=useState<Recipe|null>(null);const [favorites,setFavorites]=useState<string[]>([]);const [ready,setReady]=useState(false);const [search,setSearch]=useState('');const [pantry,setPantry]=useState<string[]>([]);const [pantryInput,setPantryInput]=useState('');const [showPantry,setShowPantry]=useState(false);const [recent,setRecent]=useState<string[]>([]);const [shown,setShown]=useState<string[]>([]);const [weekNotice,setWeekNotice]=useState('');
+ useEffect(()=>{setFavorites(readSaved('mfm-favorites',[]));setPantry(readSaved('mfm-pantry',[]));setRecent(readSaved('mfm-recent',[]));setReady(true)},[]);
+ useEffect(()=>{if(ready)localStorage.setItem('mfm-favorites',JSON.stringify(favorites))},[favorites,ready]);
  useEffect(()=>{if(ready)localStorage.setItem('mfm-pantry',JSON.stringify(pantry))},[pantry,ready]);useEffect(()=>{if(ready)localStorage.setItem('mfm-recent',JSON.stringify(recent))},[recent,ready]);
- useEffect(()=>{if(ready)localStorage.setItem('mfm-week-v6',JSON.stringify(week))},[week,ready]);
+
+ const {planner,setPlanner,loaded:plannerReady,saveError}=usePlannerStore();
+ const {minutes,type,servings}=planner.preferences;
+ const shopping=planner.shopping;const checked=planner.checked;const week=planner.week.ids;
+ const importKey=weekImportKey(week,planner.week.settings.servings);
+ const weekAlreadyAdded=planner.weekImports.includes(importKey);
+ function setPreference(patch:Partial<PlanSettings>){
+  if(!plannerReady)return;
+  setPlanner(prev=>{const preferences={...prev.preferences,...patch};return {...prev,preferences,week:prev.week.ids.length?prev.week:{...prev.week,settings:preferences}};});
+ }
+ function setMinutes(value:number){setPreference({minutes:value});}
+ function setType(value:string){setPreference({type:value as PlanSettings['type']});}
+ function setServings(value:number){setPreference({servings:value});}
+ function setShopping(value:Ingredient[]|((prev:Ingredient[])=>Ingredient[])){
+  setPlanner(prev=>updateShopping(prev,typeof value==='function'?value(prev.shopping):value));
+ }
+ function setChecked(value:string[]|((prev:string[])=>string[])){
+  setPlanner(prev=>({...prev,checked:typeof value==='function'?value(prev.checked):value}));
+ }
+ function setWeekSettings(patch:Partial<PlanSettings>){
+  setPlanner(prev=>({...prev,week:{...prev.week,settings:{...prev.week.settings,...patch},needsReview:patch.servings!==undefined?false:prev.week.needsReview}}));
+  setWeekNotice('A heti beállítások frissültek. A meglévő napok ételei megmaradtak.');
+ }
+ function generateWeeklyMenu(){
+  if(!plannerReady)return;
+  const settings=planner.week.settings;
+  const ids=generateWeek(recipes,settings.minutes,settings.type,week);
+  if(!ids.length){setWeekNotice('Ezekkel a szűrőkkel nincs recept. A korábbi terved megmaradt.');return;}
+  setPlanner(prev=>({...prev,week:{ids,settings:{...settings},needsReview:false}}));
+  setWeekNotice('A heti menü elkészült.');
+ }
+ function replaceWeeklyDay(index:number){
+  const settings=planner.week.settings;
+  const ids=replaceDay(week,index,recipes,settings.minutes,settings.type);
+  if(ids===week){setWeekNotice('Ezekhez a szűrőkhöz nincs másik választható étel. A nap változatlan maradt.');return;}
+  setPlanner(prev=>({...prev,week:{...prev.week,ids}}));
+  setWeekNotice('A kiválasztott nap étele megváltozott.');
+ }
  const filtered=useMemo(()=>recipes.filter((r:Recipe)=>matches(r,minutes,type)),[minutes,type]);const suggestions=useMemo(()=>nextSuggestions(filtered,shown,recent),[filtered,shown,recent]);const pantryMatches=useMemo(()=>rankPantry(recipes,pantry),[pantry]);const allRecipes=recipes.filter((r:Recipe)=>r.name.toLocaleLowerCase('hu-HU').includes(search.toLocaleLowerCase('hu-HU')));
- function addWeekShopping(){const additions=weekIngredients(week,recipes,servings,shoppingIngredients,mergeIngredients,(name:string)=>ingredientAvailable(name,pantry));setShopping(prev=>mergeIngredients([...prev,...additions]));setChecked(prev=>reopenAddedItems(prev,additions));setTab('shopping')}
+ function addWeekShopping(){
+  if(!plannerReady||weekAlreadyAdded||week.length!==7||week.some(id=>!recipes.some(recipe=>recipe.id===id)))return;
+  const additions=weekIngredients(week,recipes,planner.week.settings.servings,shoppingIngredients,mergeIngredients,(name:string)=>ingredientAvailable(name,pantry));
+  if(!additions.length){setWeekNotice('Minden hozzávaló megvan a kamrádban; nincs mit a listához adni.');return;}
+  if(shopping.length&&(planner.weekImports.length>0||planner.week.needsReview)&&!window.confirm('A meglévő listád már tartalmazhat korábbi heti hozzávalókat. Az új menü tételei hozzáadódnak, a korábbiak megmaradnak. Ha új bevásárlást kezdesz, előbb ürítsd a listát. Hozzáadod most?'))return;
+  setPlanner(prev=>importWeekGroceries(prev,importKey,additions));
+  setWeekNotice('A heti hozzávalók felkerültek; ezt a menüt nem adjuk hozzá még egyszer.');
+  setTab('shopping');
+ }
  function removePantryFromShopping(){
   const owned=shopping.filter(item=>ingredientAvailable(item.name,pantry));
   if(!owned.length)return;
@@ -43,10 +92,14 @@ export default function Home(){
  function addPantry(){const value=pantryInput.trim().toLocaleLowerCase('hu-HU');if(value&&!pantry.includes(value))setPantry(prev=>[...prev,value]);setPantryInput('')}
  function toggleFavorite(id:string){setFavorites(prev=>prev.includes(id)?prev.filter(x=>x!==id):[...prev,id])}
  function recipeCard(r:Recipe){return <article className="recipe-card" key={r.id}><FoodPhoto recipe={r}/><div className="recipe-info"><div className="tiny">⏱ kb. {r.minutes} perc · {r.budget?'Pénztárcabarát':'Családi kedvenc'}</div><h3>{r.name}</h3><div className="actions"><button className="small secondary" onClick={()=>toggleFavorite(r.id)} aria-label={favorites.includes(r.id)?'Eltávolítás a kedvencekből':'Kedvencekhez adás'}>{favorites.includes(r.id)?'♥':'♡'}</button><button className="small" onClick={()=>openRecipe(r)}>Recept megnyitása →</button></div></div></article>}
- return <div className="app-shell"><header className="header"><img className="brand-logo" src="/brand/varazsfazek-pot-v1.webp" width={68} height={68} alt="" aria-hidden="true"/><div><strong>Varázsfazék</strong><span>Minden napra egy jó ötlet.</span></div></header><main>
+ return <div className="app-shell"><header className="header"><img className="brand-logo" src="/brand/varazsfazek-pot-v1.webp" width={68} height={68} alt="" aria-hidden="true"/><div><strong>Varázsfazék</strong><span>Minden napra egy jó ötlet.</span></div></header><main>{saveError&&<p className="weekly-warning" role="alert">A böngészőben nem sikerült elmenteni a heti tervet vagy a bevásárlólistát. A mostani változásokat ne tekintsd tartósan mentettnek.</p>}
  {selected?<section><button className="back" onClick={()=>setSelected(null)}>← Vissza</button><div className="detail-hero"><FoodPhoto recipe={selected} large/><h1>{selected.name}</h1><p>⏱ kb. {selected.minutes} perc összesen · {servings} főre</p></div><div className="recipe-timing" aria-label="Elkészítési idő bontása"><span>Előkészítés <strong>{selected.prepMinutes} perc</strong></span><span>Főzés / sütés <strong>{selected.cookMinutes} perc</strong></span>{selected.restMinutes>0&&<span>Pihentetés <strong>{selected.restMinutes} perc</strong></span>}</div><p className="muted">Az idő a {selected.baseServings} fős alaprecept becslése, a pihentetéssel együtt. Több adag és az eszközök eltérése hosszabb időt igényelhet.</p><label className="recipe-servings-label" htmlFor="recipe-servings">Hány főre készíted?</label><select id="recipe-servings" value={servings} onChange={e=>setServings(Number(e.target.value))}>{[1,2,3,4,5,6,7,8].map(n=><option key={n} value={n}>{n} fő</option>)}</select><h2>Hozzávalók · {servings} főre</h2><ul className="ingredients">{scaledIngredients(selected,servings).map((i:Ingredient)=><li key={i.name}><span>{i.name}</span><strong>{i.quantity.toLocaleString('hu-HU')} {i.unit}</strong></li>)}</ul><p className="muted">Mértékek: ek = evőkanál, tk = teáskanál. A főzővízhez szükséges további vizet a lépések jelzik. A víz nem kerül a bevásárlólistára.</p>{scaledIngredients(selected,servings).some(i=>i.name==='tojás'&&!Number.isInteger(i.quantity))&&<p className="recipe-tip">Tört tojásmennyiségnél verd fel a tojást, és csak a szükséges részét mérd ki; ne kerekítsd fel automatikusan.</p>}{selected.note&&<p className="recipe-tip">{selected.note}</p>}<button className="primary full" onClick={()=>addShopping(selected)}>＋ Hiányzó hozzávalók a listára</button><h2>Elkészítés</h2><ol className="steps">{selected.steps.map((step:string,i:number)=><li key={i}>{step}</li>)}</ol><p className="note">Az elkészítési idők tájékoztató jellegűek. Húsételeknél mindig ellenőrizd az alapos átsülést. Allergénekért ellenőrizd a hozzávalók címkéit.</p></section>:
  <>{tab==='home'&&<><section className="hero"><div className="hero-photo" role="img" aria-label="Csirkepaprikás nokedlivel – AI-ételillusztráció"/><p className="eyebrow">ÜDVÖZÖL A VARÁZSFAZÉK!</p><h1>Mit főzzünk <em>ma?</em></h1><p>30 családias recept, gyors ötletek és okos bevásárlólista – felesleges keresgélés nélkül.</p><button className="primary" onClick={refreshSuggestions}>Mutass 3 ötletet →</button></section><section className="filters"><h2>Mihez lenne kedved?</h2><label>Legfeljebb ennyi időm van</label><div className="chip-row">{[15,30,45,60,90,120,180].map(m=><button key={m} className={'chip '+(minutes===m?'active':'')} onClick={()=>{setMinutes(m);setShown([])}}>{m} perc</button>)}</div><label>Étel típusa</label><div className="chip-row">{[['any','Bármi jöhet'],['budget','Olcsón'],['meatless','Húsmentes']].map(([v,l])=><button key={v} className={'chip '+(type===v?'active':'')} onClick={()=>{setType(v);setShown([])}}>{l}</button>)}</div><label htmlFor="servings">Hány főre főzöl?</label><select id="servings" value={servings} onChange={e=>setServings(Number(e.target.value))}>{[1,2,3,4,5,6,7,8].map(n=><option key={n} value={n}>{n} fő</option>)}</select></section><section className="pantry-section"><div className="section-heading"><h2>Mi van otthon?</h2><button className="link" onClick={()=>setShowPantry(x=>!x)}>{showPantry?'Bezárás':'Alapanyagok megadása →'}</button></div><p className="muted">Írd be, mid van már, és mutatjuk, mit készíthetsz belőle.</p>{showPantry&&<><form className="pantry-form" onSubmit={e=>{e.preventDefault();addPantry()}}><input aria-label="Otthoni alapanyag" placeholder="Például: burgonya" value={pantryInput} onChange={e=>setPantryInput(e.target.value)}/><button className="small" type="submit">Hozzáad</button></form><div className="chip-row">{pantry.map(item=><button className="chip active" key={item} onClick={()=>setPantry(prev=>prev.filter(x=>x!==item))}>{item} ×</button>)}</div>{pantryMatches.length>0&&<><h3>Ajánlatok a meglévő alapanyagokból</h3>{pantryMatches.slice(0,3).map(r=><button key={r.id} className="pantry-match" onClick={()=>openRecipe(r)}>{r.name} · {r.found}/{r.ingredients.length} alapanyag megvan · {r.missing} hiányzik →</button>)}</>}</>}</section><section><div className="section-heading"><h2>Mai ötletek</h2><button className="link" onClick={refreshSuggestions}>Másikat kérek ↻</button></div>{suggestions.length?suggestions.map(recipeCard):<p className="empty">Most nincs ilyen recept. Próbálj hosszabb főzési időt!</p>}</section></>}
- {tab==='week'&&<section className="weekly-section"><h1>Heti menütervező</h1><p className="muted">Hét nap, hét finom ötlet. A terv ezen az eszközön automatikusan megmarad.</p><p className="muted">A főoldalon választott főzési idő, ételtípus és adagszám itt is érvényes.</p><div className="weekly-actions"><button className="primary" onClick={()=>setWeek(generateWeek(recipes,minutes,type,week))}>{week.length?'Új heti menü készítése ↻':'Heti menü összeállítása →'}</button>{week.length>0&&<button className="secondary small" onClick={()=>{if(window.confirm('Törlöd a mentett heti menüt?'))setWeek([])}}>Terv törlése</button>}</div>{week.length>0&&<><div className="weekly-grid">{days.map((day,i)=>{const r=recipes.find((item:Recipe)=>item.id===week[i]);return <article className="weekly-day" key={day}><span className="weekly-day-name">{day}</span>{r?<><FoodPhoto recipe={r}/><h3>{r.name}</h3><p className="muted">⏱ {r.minutes} perc · {servings} fő</p><div className="weekly-day-buttons"><button className="small" onClick={()=>openRecipe(r)}>Recept →</button><button className="small secondary" onClick={()=>setWeek(prev=>replaceDay(prev,i,recipes,minutes,type))}>Másikat kérek ↻</button></div></>:<p>Nincs recept</p>}</article>})}</div><button className="primary full" onClick={addWeekShopping}>＋ Heti hozzávalók a bevásárlólistára</button><p className="muted">Az azonos hozzávalókat összevonjuk, az otthon lévőket kihagyjuk. A meglévő bevásárlólista tételei megmaradnak.</p></>}</section>}
+ {tab==='week'&&<WeeklyPlanner week={planner.week} preferences={planner.preferences} recipes={recipes} ready={ready&&plannerReady} alreadyAdded={weekAlreadyAdded} notice={weekNotice}
+  onSettings={setWeekSettings} onGenerate={generateWeeklyMenu} onReplace={replaceWeeklyDay}
+  onOpen={recipe=>{setServings(planner.week.settings.servings);openRecipe(recipe);}}
+  onClear={()=>{if(window.confirm('Törlöd a mentett heti menüt? A bevásárlólista megmarad.')){setPlanner(prev=>({...prev,week:{ids:[],settings:{...prev.week.settings},needsReview:false}}));setWeekNotice('A heti terv törölve.');}}}
+  onAdd={addWeekShopping} photo={recipe=><FoodPhoto recipe={recipe}/>}/>}
  {tab==='recipes'&&<section><h1>Receptek</h1><p className="muted">30 egyszerű, hétköznapi családi fogás.</p><input aria-label="Recept keresése" placeholder="Keress egy receptet…" value={search} onChange={e=>setSearch(e.target.value)}/>{allRecipes.map(recipeCard)}{!allRecipes.length&&<p className="empty">Nincs találat.</p>}</section>}
  {tab==='shopping'&&<ShoppingChecklist items={shopping} checked={checked} pantryCount={shopping.filter(item=>ingredientAvailable(item.name,pantry)).length} onRemovePantry={removePantryFromShopping}
   onToggle={key=>setChecked(prev=>prev.includes(key)?prev.filter(x=>x!==key):[...prev,key])}
