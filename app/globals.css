@@ -89,3 +89,6 @@ footer{font-size:13px;line-height:1.4}
 
 /* Saved weekly plan settings and explicit filter feedback. */
 .weekly-settings{border:1px solid #d8ddcf;border-radius:16px;margin:20px 0;padding:16px;display:grid;gap:10px;min-width:0}.weekly-settings legend{font-weight:700;padding:0 6px}.weekly-settings label{font-weight:700;font-size:15px}.weekly-warning{padding:15px;background:#fff1d7;border:1px solid #ddbd7b;border-radius:13px;font-size:15px;line-height:1.5;color:#624b25}.weekly-hint{padding:14px;background:#edf1e7;border-radius:13px;font-size:15px;line-height:1.5}.weekly-hint p{margin-top:0}.weekly-day-warning{font-size:14px;font-weight:700;color:#775318}.weekly-notice:empty{display:none}.weekly-notice{font-size:15px;line-height:1.5;color:#416b52}button:disabled{opacity:.6;cursor:default}.weekly-section .primary:disabled{box-shadow:none}
+
+/* Five navigation destinations stay in one row, including on phones. */
+.bottom-nav{grid-template-columns:repeat(5,minmax(0,1fr))}.bottom-nav button{min-width:0}.bottom-nav button small{font-size:12px}@media(max-width:380px){.bottom-nav button small{font-size:11px}}
