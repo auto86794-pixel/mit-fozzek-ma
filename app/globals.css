@@ -73,3 +73,5 @@ footer{font-size:13px;line-height:1.4}
 .recipe-timing{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 10px}.recipe-timing>span{flex:1;min-width:115px;background:#f0eee4;padding:12px;border-radius:12px;font-size:14px;line-height:1.5}.recipe-timing strong{display:block;font-size:17px}.recipe-tip{background:#f3e9d8;padding:15px;border-left:3px solid #b89a61;border-radius:0 12px 12px 0;font-size:15px;line-height:1.55}
 
 .recipe-servings-label{display:block;font-weight:700;font-size:16px;margin:22px 0 10px}
+
+.site-footer{text-align:center;padding:22px 16px 92px;color:#a18f75;border-top:1px solid #e8dfd2;font-size:13px;line-height:1.5}
