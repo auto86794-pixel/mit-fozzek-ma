@@ -1,1 +1,1 @@
-V7 levesfotók: 10 ételhez önálló, felirat nélküli képfájl került be a receptazonosítóhoz rendelve. A montázs két további képe (hagymaleves, Jókai bableves) nem felel meg pontosan a V7 receptlistának, ezért nem rendeltük téves recepthez. A többi új leves a korábbi helyettesítő képet használja.
+A V7 levesfotói: a korábbi 10 kép mellett további 6 leveshez külön webp kép és kis előnézet készült. Összesen 16 receptazonosítóhoz van kép rendelve. Az új képek: Frankfurti leves, Zöldséges bableves, Csirkés csorba, Magyaros krumplileves, Tejfölös gombaleves, Tarhonyaleves.
