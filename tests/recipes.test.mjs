@@ -5,7 +5,7 @@ test('portion scaling',()=>{const r=recipes.find(r=>r.id==='rakott');assert.equa
 test('shopping ingredient merging',()=>{const out=mergeIngredients([{name:'tejföl',quantity:200,unit:'g'},{name:'tejföl',quantity:100,unit:'g'}]);assert.equal(out.length,1);assert.equal(out[0].quantity,300)});
 
 test('reviewed recipes have complete timing and valid unique ingredient quantities',()=>{
- assert.equal(recipes.length,30);
+ assert.equal(recipes.length,42);
  for(const recipe of recipes){
   assert.equal(recipe.baseServings,4,recipe.id);
   assert.equal(recipe.minutes,recipe.prepMinutes+recipe.cookMinutes+recipe.restMinutes,recipe.id);
