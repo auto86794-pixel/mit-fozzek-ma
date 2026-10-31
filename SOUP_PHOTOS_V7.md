@@ -1,0 +1,1 @@
+V7 levesfotók: 10 ételhez önálló, felirat nélküli képfájl került be a receptazonosítóhoz rendelve. A montázs két további képe (hagymaleves, Jókai bableves) nem felel meg pontosan a V7 receptlistának, ezért nem rendeltük téves recepthez. A többi új leves a korábbi helyettesítő képet használja.
