@@ -7,6 +7,8 @@ import {shoppingKey,splitShopping} from '../lib/shopping.mjs';
 type Props={
  items:Ingredient[];
  checked:string[];
+ pantryCount:number;
+ onRemovePantry:()=>void;
  onToggle:(key:string)=>void;
  onRemove:(key:string)=>void;
  onReset:()=>void;
@@ -14,7 +16,7 @@ type Props={
  onBrowse:()=>void;
 };
 
-export default function ShoppingChecklist({items,checked,onToggle,onRemove,onReset,onClear,onBrowse}:Props){
+export default function ShoppingChecklist({items,checked,pantryCount,onRemovePantry,onToggle,onRemove,onReset,onClear,onBrowse}:Props){
  const {remaining,purchased}=splitShopping(items,checked);
  const [notice,setNotice]=useState('');
 
@@ -35,6 +37,7 @@ export default function ShoppingChecklist({items,checked,onToggle,onRemove,onRes
   <h1 id="shopping-title">Bevásárlólista</h1>
   <p className="muted">Pipáld ki, amit betettél a kosárba. A kipipált tételeket lent, a „Megvéve” részben találod.</p>
   <p className="checklist-announcement" role="status">{notice}</p>
+  {pantryCount>0&&<div className="pantry-shopping-notice"><p><strong>{pantryCount} alapanyag már otthon van</strong> a bevásárlólistádról. Ezeket külön eltávolíthatod, a többi tétel megmarad.</p><button type="button" className="secondary full" onClick={()=>{onRemovePantry();setNotice("Az otthon meglévő alapanyagokat eltávolítottuk a listáról.");}}>Otthon lévők levétele a listáról</button></div>}
   {items.length>0?<>
    <div className="checklist-progress">
     <div><strong>{remaining.length===0?'Minden a kosárban!':remaining.length+' tétel van még hátra'}</strong><span>{purchased.length} / {items.length} megvéve</span></div>

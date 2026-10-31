@@ -75,3 +75,12 @@ footer{font-size:13px;line-height:1.4}
 .recipe-servings-label{display:block;font-weight:700;font-size:16px;margin:22px 0 10px}
 
 .site-footer{text-align:center;padding:22px 16px 92px;color:#6d6656;border-top:1px solid #e8dfd2;font-size:17px;font-weight:600;line-height:1.5}
+
+/* V5: consistent photo crops and mobile-friendly shopping controls */
+.recipe-card .food-photo{height:118px;min-height:118px;flex-shrink:0}
+.food-photo img{display:block;object-fit:cover;object-position:50% 50%}
+.food-photo.large{height:clamp(220px,55vw,290px);min-height:220px}
+.recipe-card .actions button{min-height:44px}
+.pantry-shopping-notice{background:#f1eee4;border:1px solid #dcd4bf;border-radius:16px;padding:12px 16px;margin:16px 0}
+.pantry-shopping-notice p{font-size:15px;line-height:1.5;margin:4px 0 10px}
+@media(max-width:380px){.recipe-card .food-photo{width:94px;min-width:94px;height:112px;min-height:112px}.recipe-card .actions{gap:6px}.recipe-card .actions button{font-size:13px}.site-footer{font-size:17px}}
