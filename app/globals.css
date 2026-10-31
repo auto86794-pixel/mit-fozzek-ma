@@ -89,3 +89,13 @@ footer{font-size:13px;line-height:1.4}
 
 /* V7: soups and optional two-course weekly plan */
 .course-toggle{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.course-toggle button{min-height:44px}.course-card{border-top:1px solid #e4dece;padding:14px 0}.course-card:first-of-type{border-top:0}.course-label{display:block;margin:0 0 10px;color:#426b52;font-size:16px}.course-card .food-photo{height:125px}.course-card h3{margin:10px 0 4px}.bottom-nav{overflow-x:auto}.bottom-nav button{flex:1 0 54px}@media(max-width:520px){.bottom-nav small{font-size:10px}.bottom-nav button{padding:8px 1px}.course-card .food-photo{height:165px}}
+
+/* V8 final: all six navigation destinations fit on narrow phones without sideways scrolling. */
+.bottom-nav{grid-template-columns:repeat(6,minmax(0,1fr));overflow-x:visible}
+.bottom-nav button{min-width:0;flex:none;min-height:56px;padding:7px 1px;overflow-wrap:anywhere}
+.bottom-nav button small{font-size:clamp(9px,2.5vw,12px);line-height:1.2;max-width:100%;text-align:center}
+@media(max-width:360px){.bottom-nav button span{font-size:21px}.bottom-nav button small{font-size:9px}.bottom-nav{padding-left:2px;padding-right:2px}}
+/* Prevent recipe ingredients and actions from overflowing the viewport. */
+.ingredients li>span{min-width:0;overflow-wrap:anywhere}
+.recipe-card .actions{min-width:0}
+@media(max-width:360px){main{padding-left:14px;padding-right:14px}.recipe-card .actions button{font-size:12px}}
