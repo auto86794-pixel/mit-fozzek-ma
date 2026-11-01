@@ -65,7 +65,7 @@ export default function Home(){
   onReset={()=>setChecked([])}
   onClear={()=>{if(window.confirm('Biztosan törlöd a teljes bevásárlólistát, a megvett tételekkel együtt?')){setShopping([]);setChecked([]);}}}
   onBrowse={()=>setTab('recipes')}/>}
- {tab==='profile'&&<FamilyProfile profile={profile} onChange={updateProfile}/>}
+ {tab==='profile'&&<FamilyProfile profile={profile} onChange={updateProfile} onBack={()=>{setSelected(null);setTab('home')}}/>}
  {tab==='favorites'&&<section><h1>Kedvenc receptjeim</h1><p className="muted">A bevált ételeid egy helyen.</p>{recipes.filter((r:Recipe)=>favorites.includes(r.id)).map(recipeCard)}{favorites.length===0&&<p className="empty">Még nincs kedvenc recepted. A szív ikonnal menthetsz el ételeket.</p>}</section>}</>}
  </main><footer className="site-footer">Varázsfazék · Minden napra egy jó ötlet.</footer><nav className="bottom-nav" aria-label="Fő navigáció">{([['home','⌂','Főoldal'],['recipes','▤','Receptek'],['soups','♨','Levesek'],['shopping','▣','Bevásárlás'],['week','▦','Heti menü'],['favorites','♡','Kedvencek']] as const).map(([id,icon,label])=><button key={id} className={tab===id?'current':''} onClick={()=>{setSelected(null);setTab(id)}}><span aria-hidden="true">{icon}</span><small>{label}</small></button>)}</nav></div>
 }

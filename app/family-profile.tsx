@@ -1,9 +1,9 @@
 'use client';
 import {ALLERGEN_OPTIONS,DISLIKED_OPTIONS} from '../lib/family-profile.mjs';
 import type {FamilyProfile as Profile} from '../lib/family-profile.mjs';
-export default function FamilyProfile({profile,onChange}:{profile:Profile;onChange:(next:Profile)=>void}){
+export default function FamilyProfile({profile,onChange,onBack}:{profile:Profile;onChange:(next:Profile)=>void;onBack:()=>void}){
  const toggle=(field:'disliked'|'allergens',value:string)=>onChange({...profile,[field]:profile[field].includes(value)?profile[field].filter(x=>x!==value):[...profile[field],value]});
- return <section className="family-profile"><h1>👨‍👩‍👧‍👦 Családi profil</h1><p className="muted">Állítsd be, hogyan főztök otthon. A beállításokat csak ezen a böngészőn tároljuk, regisztráció nélkül.</p>
+ return <section className="family-profile"><button type="button" className="family-back-button" onClick={onBack}>← Vissza a főoldalra</button><h1>👨‍👩‍👧‍👦 Családi profil</h1><p className="muted">Állítsd be, hogyan főztök otthon. A beállításokat csak ezen a böngészőn tároljuk, regisztráció nélkül.</p>
  <div className="profile-panel"><label htmlFor="family-servings">Hány főre főztök?</label><select id="family-servings" value={profile.servings} onChange={e=>onChange({...profile,servings:Number(e.target.value)})}>{Array.from({length:8},(_,i)=><option key={i+1} value={i+1}>{i+1} fő</option>)}</select><p className="muted">Ez lesz a receptek és a bevásárlólista alapértelmezett adagszáma.</p>
  <label htmlFor="family-time">Általában mennyi időt szántok a főzésre?</label><select id="family-time" value={profile.cookingTime} onChange={e=>onChange({...profile,cookingTime:Number(e.target.value)})}>{[15,30,45,60,90,120,180].map(n=><option key={n} value={n}>{n} perc</option>)}</select><p className="muted">A főoldali időbeállítással együtt változik.</p></div>
  <div className="profile-panel"><h2>Nem kedvelt alapanyagok</h2><p className="muted">A következő fejlesztési lépésben ezeket figyelembe vesszük az ajánlásoknál.</p><div className="profile-options">{DISLIKED_OPTIONS.map(item=><label key={item}><input type="checkbox" checked={profile.disliked.includes(item)} onChange={()=>toggle('disliked',item)}/><span>{item}</span></label>)}</div></div>

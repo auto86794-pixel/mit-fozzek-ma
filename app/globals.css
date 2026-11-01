@@ -126,3 +126,6 @@ footer{font-size:13px;line-height:1.4}
 .family-home-content .family-home-summary{font-size:12px;color:#416b52;font-weight:700}
 .family-home-arrow{font-size:30px;color:#718c72;line-height:1}
 @media(max-width:360px){.family-home-card{padding:12px;gap:9px}.family-home-content strong{font-size:15px}.family-home-icon{flex-basis:36px;width:36px;height:36px}}
+
+/* Családi profil: vissza a főoldalra */
+.family-back-button{display:inline-flex;align-items:center;gap:.5rem;margin-bottom:1rem;padding:.7rem 1rem;border:1px solid #a8b9a0;border-radius:12px;background:#f5f3e9;color:#344f3c;font:inherit;font-weight:600;cursor:pointer;min-height:44px}.family-back-button:hover{background:#e8eee2}.family-back-button:focus-visible{outline:3px solid #6b8b70;outline-offset:2px}
