@@ -1,0 +1,1 @@
+V9.1: 30 új recept. 16 korábban beépített ételillusztráció, 14 új, receptnévvel ellátott stilizált illusztráció. A 14 új kép NEM fotó; később egyedi, pontos ételfotóra cserélhető. A korábbi 42 recepthez nem nyúltunk.
