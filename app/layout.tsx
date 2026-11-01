@@ -5,16 +5,16 @@ const siteUrl = 'https://varazsfazek.hu';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: 'Varázsfazék | Minden napra egy jó ötlet',
-  description: 'Varázsfazék: családi receptek, napi főzési ötletek, heti menütervező, Maradékmentő és praktikus bevásárlólista.',
+  title: 'Varázsfazék – Napi főzési ötletek az egész családnak',
+  description: 'Mit főzzek ma? Fedezz fel napi 3 receptötletet, tervezz heti menüt, készíts bevásárlólistát, és használd fel az otthoni alapanyagokat!',
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     locale: 'hu_HU',
     url: siteUrl,
     siteName: 'Varázsfazék',
-    title: 'Varázsfazék – Minden napra egy jó ötlet',
-    description: 'Mit főzzek ma? Családi receptek, heti menütervező és Maradékmentő egy helyen.',
+    title: 'Varázsfazék – Napi főzési ötletek az egész családnak',
+    description: 'Mit főzzek ma? Fedezz fel napi 3 receptötletet, tervezz heti menüt, készíts bevásárlólistát, és használd fel az otthoni alapanyagokat!',
   },
   robots: { index: true, follow: true },
 };
