@@ -131,3 +131,44 @@ footer{font-size:13px;line-height:1.4}
 .family-back-button{display:inline-flex;align-items:center;gap:.5rem;margin-bottom:1rem;padding:.7rem 1rem;border:1px solid #a8b9a0;border-radius:12px;background:#f5f3e9;color:#344f3c;font:inherit;font-weight:600;cursor:pointer;min-height:44px}.family-back-button:hover{background:#e8eee2}.family-back-button:focus-visible{outline:3px solid #6b8b70;outline-offset:2px}
 /* V10: Maradékmentő a főoldali kártyáról, változatlan hatos alsó navigációval. */
 .leftovers-section .pantry-form{margin:18px 0 12px}.leftovers-section .chip-row{margin-bottom:20px}.leftover-card{background:#fffdf8;border:1px solid #e2daca;border-radius:17px;padding:15px;margin:14px 0}.leftover-card-top{display:flex;gap:14px;align-items:flex-start}.leftover-card-top .food-photo{flex:0 0 112px;width:112px;height:100px;border-radius:12px;overflow:hidden}.leftover-card-top>div:last-child{min-width:0;flex:1}.leftover-card h3{margin:0 0 7px}.leftover-card p{overflow-wrap:anywhere}.leftover-complete{color:#376b43}.leftover-card .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}@media(max-width:430px){.leftover-card-top .food-photo{flex-basis:88px;width:88px;height:90px}.leftover-card{padding:12px}}
+
+/* V11 – valódi asztali és tablet nézet; a mobilos elrendezés változatlan. */
+@media (min-width: 768px) {
+  body { background:#e9e6df; }
+  .app-shell { max-width:1180px; width:calc(100% - 48px); margin:24px auto; padding-bottom:0; border-radius:24px; overflow:visible; min-height:calc(100vh - 48px); }
+  .header { padding:22px clamp(24px,4vw,56px); border-radius:24px 24px 0 0; }
+  .header strong { font-size:clamp(24px,2.5vw,32px); }
+  .header span { font-size:16px; }
+  main { padding:28px clamp(24px,4vw,56px) 38px; }
+  .bottom-nav { position:static; transform:none; width:100%; max-width:none; display:flex; justify-content:center; gap:clamp(8px,2vw,24px); padding:12px 20px; border-top:0; border-bottom:1px solid #e7e0d3; background:#fffdf8; overflow:visible; }
+  .bottom-nav button { flex:0 1 auto; min-width:105px; min-height:52px; flex-direction:row; justify-content:center; gap:8px; padding:10px 12px; border-radius:12px; }
+  .bottom-nav button:hover,.bottom-nav button.current { background:#e9eee5; }
+  .bottom-nav button span { font-size:22px; }
+  .bottom-nav button small { font-size:14px; white-space:nowrap; }
+  .hero { max-width:none; }
+  .hero-photo { height:clamp(260px,32vw,400px); }
+  .hero h1 { font-size:clamp(34px,4vw,48px); }
+  .hero p:not(.eyebrow) { font-size:17px; }
+  .family-home-section { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+  .family-home-card { height:100%; margin:0; }
+  section:has(> .recipe-card) { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; align-items:start; }
+  section:has(> .recipe-card) > :not(.recipe-card) { grid-column:1/-1; }
+  section:has(> .recipe-card) > .recipe-card { margin:0; height:100%; }
+  .recipe-card .food-photo { width:132px; min-width:132px; height:140px; }
+  .weekly-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .leftovers-section .leftover-card { max-width:none; }
+  .site-footer { padding:22px; }
+}
+@media (min-width: 1100px) {
+  section:has(> .recipe-card) { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .recipe-card { flex-direction:column; }
+  .recipe-card .food-photo { width:100%; min-width:0; height:180px; }
+  .recipe-info { flex:1; justify-content:flex-start; }
+  .recipe-info .actions { margin-top:auto; }
+}
+@media (min-width:768px) and (max-width:900px) {
+  .bottom-nav { gap:2px; padding-inline:8px; }
+  .bottom-nav button { min-width:0; padding:9px 7px; }
+  .bottom-nav button small { font-size:12px; }
+  .weekly-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
