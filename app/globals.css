@@ -172,3 +172,6 @@ footer{font-size:13px;line-height:1.4}
   .bottom-nav button small { font-size:12px; }
   .weekly-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
+
+/* V12: indexelhető, önálló receptoldalak */
+.seo-brand{display:flex;align-items:center;gap:14px;color:inherit;text-decoration:none}.seo-brand span{display:flex;flex-direction:column;gap:4px}.seo-brand strong{font-size:1.7rem}.seo-brand small{font-size:.95rem}.seo-recipe{max-width:900px;margin:auto;padding:28px 24px 64px}.seo-recipe h1{font-size:clamp(1.8rem,4vw,2.7rem)}.seo-recipe h2{margin-top:30px}.seo-recipe li{margin:9px 0;line-height:1.65}.seo-recipe a{color:#356c54}.seo-photo{width:100%;height:auto;max-height:460px;object-fit:cover;border-radius:18px}.seo-recipe-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:25px}.seo-recipe-link{display:flex;flex-direction:column;gap:8px;padding:18px;border:1px solid #ddd5bd;border-radius:14px;text-decoration:none;background:#f8f5ec}.seo-recipe-link span{font-size:.9rem;color:#5c6e5d}

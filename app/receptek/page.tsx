@@ -1,0 +1,5 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import {recipes} from '../../lib/recipes.mjs';
+export const metadata: Metadata = {title:'Családi receptek és gyors ebédötletek – Varázsfazék',description:'Böngéssz egyszerű családi receptek, házias levesek és gyors ebédötletek között. Hozzávalók, elkészítés és főzési idők egy helyen.',alternates:{canonical:'/receptek'}};
+export default function RecipesIndex(){return <div className="app-shell"><header className="header"><Link href="/" className="seo-brand"><img className="brand-logo" src="/brand/varazsfazek-pot-v1.webp" width={68} height={68} alt=""/><span><strong>Varázsfazék</strong><small>Minden napra egy jó ötlet.</small></span></Link></header><main className="seo-recipe"><p><Link href="/">← Főoldal</Link></p><h1>Egyszerű családi receptek</h1><p>Válassz a házias fogások és levesek közül! A heti menütervező és a bevásárlólista a főoldalon érhető el.</p><div className="seo-recipe-grid">{recipes.map(r=><Link key={r.id} href={`/recept/${r.id}`} className="seo-recipe-link"><strong>{r.name}</strong><span>⏱ {r.minutes} perc</span></Link>)}</div></main></div>}

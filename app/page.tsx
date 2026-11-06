@@ -70,5 +70,5 @@ export default function Home(){
   onBrowse={()=>setTab('recipes')}/>}
  {tab==='profile'&&<FamilyProfile profile={profile} onChange={updateProfile} onBack={()=>{setSelected(null);setTab('home')}}/>}
  {tab==='favorites'&&<section><h1>Kedvenc receptjeim</h1><p className="muted">A bevált ételeid egy helyen.</p>{recipes.filter((r:Recipe)=>favorites.includes(r.id)).map(recipeCard)}{favorites.length===0&&<p className="empty">Még nincs kedvenc recepted. A szív ikonnal menthetsz el ételeket.</p>}</section>}</>}
- </main><footer className="site-footer">Varázsfazék · Minden napra egy jó ötlet.</footer></div>
+ </main><footer className="site-footer">Varázsfazék · Minden napra egy jó ötlet. · <a href="/receptek">Összes recept</a></footer></div>
 }
